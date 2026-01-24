@@ -7,13 +7,13 @@ plugins {
 
 android {
     namespace = "com.example.lumia_launcher"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     sourceSets {
         getByName("main") {
             java.srcDirs("src/main/java")
-            kotlin.srcDirs("src/main/kotlin")  // keep Kotlin support too
+            //kotlin.srcDirs("src/main/kotlin")  // keep Kotlin support too
         }
     }
 
@@ -31,10 +31,10 @@ android {
         applicationId = "com.example.lumia_launcher"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 21
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     buildTypes {
