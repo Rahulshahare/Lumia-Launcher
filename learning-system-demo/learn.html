@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Learn – Bilingual Kids</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Learn Words</h1>
+
+  <div id="cardContainer" class="card">
+    <img id="cardImg" src="" alt="Word picture">
+    <div class="content">
+      <h2 id="nativeWord"></h2>
+      <p id="englishWord"></p>
+
+      <div style="margin-top:0.8rem;">
+        <button class="btn" id="playNative">
+          🔊 Native
+        </button>
+        <button class="btn" id="playEnglish" style="margin-left:.6rem;">
+          🔊 English
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-arrows">
+    <button id="prevBtn" title="Previous">&#9664;</button>
+    <button id="nextBtn" title="Next">&#9654;</button>
+  </div>
+
+  <footer style="margin-top:2rem; text-align:center;">
+    <a href="index.html">← Back to Home</a>
+  </footer>
+</div>
+
+<script>
+  // ---------- Load JSON ----------
+  let words = [], cur = 0;
+  fetch('words.json')
+    .then(r => r.json())
+    .then(data => { words = data; renderCard(0); })
+    .catch(console.error);
+
+  // ---------- Populate UI ----------
+  function renderCard(i) {
+    if (!words[i]) return;
+    const w = words[i];
+    document.getElementById('cardImg').src = w.image;
+    document.getElementById('nativeWord').textContent = w.native;
+    document.getElementById('englishWord').textContent = w.english;
+    document.getElementById('playNative').dataset.src = w.audio_native;
+    document.getElementById('playEnglish').dataset.src = w.audio_english;
+    document.getElementById('prevBtn').disabled = i === 0;
+    document.getElementById('nextBtn').disabled = i === words.length - 1;
+    cur = i;
+  }
+
+  // ---------- Arrow navigation ----------
+  document.getElementById('prevBtn').onclick = () => cur > 0 && renderCard(cur-1);
+  document.getElementById('nextBtn').onclick = () => cur < words.length-1 && renderCard(cur+1);
+
+  // ---------- Audio ----------
+  const play = url => new Audio(url).play();
+  document.getElementById('playNative').onclick  = e => play(e.target.dataset.src);
+  document.getElementById('playEnglish').onclick = e => play(e.target.dataset.src);
+</script>
+</body>
+</html>

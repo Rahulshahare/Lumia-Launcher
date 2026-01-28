@@ -1,0 +1,183 @@
+/* -------------------------------------------------------------
+   Global variables – tweak here for a quick colour change
+   ------------------------------------------------------------- */
+:root {
+  --primary:   #3b82f6;   /* indigo‑500 */
+  --on-primary:#ffffff;
+  --surface:   #ffffff;
+  --on-surface:#212121;
+  --background:#f4f7fa;
+  --error:     #ef4444;
+  --radius:    .8rem;
+  --shadow:    0 4px 12px rgba(0,0,0,.08);
+  --transition:.2s ease;
+  --font:      'Poppins', system-ui, sans-serif;
+}
+
+/* -------------------------------------------------------------
+   Basic reset & typography
+   ------------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing:border-box; }
+html,body { margin:0; padding:0; height:100%; }
+body {
+  font-family: var(--font);
+  background: var(--background);
+  color: var(--on-surface);
+  line-height:1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -------------------------------------------------------------
+   Layout helpers
+   ------------------------------------------------------------- */
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* -------------------------------------------------------------
+   Typography
+   ------------------------------------------------------------- */
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--primary);
+}
+h2 { font-size:1.75rem; margin: .5rem 0; }
+p  { margin: .75rem 0; }
+
+/* -------------------------------------------------------------
+   Buttons – primary, secondary & disabled
+   ------------------------------------------------------------- */
+.btn,
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap:.4rem;
+  font-weight:600;
+  font-size:1rem;
+  color: var(--on-primary);
+  background: var(--primary);
+  border:none;
+  border-radius: var(--radius);
+  padding:.75rem 1.2rem;
+  cursor:pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+.btn:hover,
+button:hover { background:#2563eb; }
+.btn:active,
+button:active { transform:scale(.97); }
+.btn:disabled,
+button:disabled {
+  background:#cbd5e1;
+  color:#9ca3af;
+  cursor:not-allowed;
+}
+
+/* -------------------------------------------------------------
+   Card – used in Learn page
+   ------------------------------------------------------------- */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  display:flex;
+  flex-direction:column;
+}
+.card img { width:100%; height:auto; object-fit:contain; }
+.card .content {
+  padding:1rem;
+  text-align:center;
+}
+.card .content h2 { color: var(--primary); }
+.card .content p  { font-size:1.1rem; }
+
+/* -------------------------------------------------------------
+   Navigation arrows (Learn page)
+   ------------------------------------------------------------- */
+.nav-arrows {
+  display:flex;
+  justify-content:space-between;
+  margin-top:.5rem;
+}
+.nav-arrows button {
+  background:transparent;
+  font-size:2.2rem;
+  color: var(--primary);
+  padding:.2rem;
+}
+.nav-arrows button:disabled { opacity:.3; cursor:default; }
+
+/* -------------------------------------------------------------
+   Star rating – animated “fill” on page load
+   ------------------------------------------------------------- */
+.star-bar {
+  display:flex;
+  justify-content:center;
+  gap:.2rem;
+  font-size:1.8rem;
+}
+.star-bar .star {
+  color:#ffb400;
+  animation: twinkle .4s ease forwards;
+}
+.star-bar .star:nth-child(odd)  { animation-delay:.05s; }
+.star-bar .star:nth-child(even) { animation-delay:.15s; }
+
+@keyframes twinkle {
+  from { opacity:0; transform:scale(.7); }
+  to   { opacity:1; transform:scale(1); }
+}
+
+/* -------------------------------------------------------------
+   Quiz page – grid of picture options
+   ------------------------------------------------------------- */
+.quiz-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(120px,1fr));
+  gap:1rem;
+  margin:.75rem 0;
+}
+.quiz-option {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.quiz-option input { display:none; }
+.quiz-option label {
+  cursor:pointer;
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.quiz-option label:hover { transform:translateY(-2px); }
+.quiz-option input:checked + label {
+  outline:3px solid var(--primary);
+  outline-offset:-3px;
+}
+
+/* -------------------------------------------------------------
+   Footer link
+   ------------------------------------------------------------- */
+footer a {
+  color:var(--primary);
+  text-decoration:none;
+}
+footer a:hover { text-decoration:underline; }
+
+/* -------------------------------------------------------------
+   Media queries – a tiny responsive tweak
+   ------------------------------------------------------------- */
+@media (max-width:420px) {
+  h1 { font-size:1.75rem; }
+  .btn, button { font-size:.9rem; padding:.6rem .9rem; }
+}

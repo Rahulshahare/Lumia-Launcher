@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz – Bilingual Kids</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Quiz Me!</h1>
+
+  <div id="quizArea"></div>
+
+  <footer style="margin-top:2rem; text-align:center;">
+    <a href="index.html">← Back to Home</a>
+  </footer>
+</div>
+
+<script>
+  let words = [], cur = 0, score = 0;
+
+  // ----- Load words -----
+  fetch('words.json')
+    .then(r => r.json())
+    .then(data => { words = shuffle(data); start(); })
+    .catch(console.error);
+
+  // ----- Helpers -----
+  const shuffle = arr => arr.sort(() => Math.random() - .5);
+  const getOptions = idx => {
+    const correct = words[idx];
+    const wrong = shuffle(words.filter((_,i)=>i!==idx)).slice(0,3);
+    return shuffle([correct, ...wrong]);
+  };
+
+  // ----- Render a question -----
+  function render() {
+    const q = words[cur];
+    const opts = getOptions(cur);
+    const html = `
+      <p><strong>Which picture matches the English word?</strong><br>
+         <em>"${q.english}"</em></p>
+      <form id="quizForm" class="quiz-grid">
+        ${opts.map((opt,i)=>`
+          <div class="quiz-option">
+            <input type="radio" name="choice" id="opt${i}" value="${opt.native}">
+            <label for="opt${i}">
+              <img src="${opt.image}" alt="${opt.native}" width="100%">
+            </label>
+          </div>
+        `).join('')}
+        <button type="submit" class="btn" style="grid-column:1/-1;">Check</button>
+      </form>
+      <p style="margin-top:.5rem;">Score: <strong>${score}</strong> / ${words.length}</p>
+    `;
+    document.getElementById('quizArea').innerHTML = html;
+    document.getElementById('quizForm').addEventListener('submit', onSubmit);
+  }
+
+  // ----- Submit handler -----
+  function onSubmit(e) {
+    e.preventDefault();
+    const sel = document.querySelector('input[name="choice"]:checked');
+    if (!sel) return;
+    const right = words[cur].native;
+    if (sel.value === right) {
+      score++;
+      alert('✅ Correct! +1 star');
+    } else {
+      alert(`❌ Oops! The correct answer was "${right}"`);
+    }
+    if (cur < words.length - 1) {
+      cur++;
+      render();
+    } else {
+      finish();
+    }
+  }
+
+  // ----- Finish screen -----
+  function finish() {
+    const html = `
+      <h2>Quiz finished!</h2>
+      <p>You scored <strong>${score}</strong> out of <strong>${words.length}</strong>.</p>
+      <button class="btn" onclick="location.reload()">Play again</button>
+    `;
+    document.getElementById('quizArea').innerHTML = html;
+  }
+
+  // ----- Start the quiz -----
+  function start() { cur = 0; score = 0; render(); }
+</script>
+</body>
+</html>
